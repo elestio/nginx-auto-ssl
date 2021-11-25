@@ -2,6 +2,7 @@
 *The simpliest solution to add SSL cert to your site*
 
 THIS IS A FORK OF: https://github.com/Valian/docker-nginx-auto-ssl
+
 First goal of the fork is to customize it for the needs of Elestio to include rate limiter & output cache
 
 Docker image for automatic generation of SSL certs using Let's encrypt and Open Resty, with reasonable SSL settings, HTTP/2 and WebSockets support out-of-the-box.
