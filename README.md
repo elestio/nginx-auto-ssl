@@ -239,16 +239,17 @@ docker build -t docker-nginx-auto-ssl .
 docker run [YOUR_OPTIONS] docker-nginx-auto-ssl
 ```
 
-# CHANGELOG
-
-* **11-11-2019** - Added gzip support and dropped TLS 1.0 and 1.1 #33
-* **18-04-2019** - Added WebSocket support #22
-* **29-05-2017** - Fixed duplicate redirect location after container restart #2
-* **19-12-2017** - Support for `$SITES` variable   
-* **2-12-2017** - Dropped HSTS by default
-* **25-11-2017** - Initial release  
 
 
-# LICENCE
+# How to update this image
 
-MIT
+1) Git clone this repo
+2) Make changes
+3) Rebuild image with: `docker build . --no-cache`
+4) find latest built image id with `docker images` and find the latest image id, Example: 85bbf15a555d
+5) tag the new image with `docker tag 85bbf15a555d elestio/nginx-auto-ssl:1.0.xx` where xx is a new version number 
+6) tag the new image with `docker tag 85bbf15a555d elestio/nginx-auto-ssl:latest` to set this image as latest
+7) push to docker hub with: `docker push elestio/nginx-auto-ssl:1.0.xx`
+8) push to docker hub with: `docker push elestio/nginx-auto-ssl:latest`
+
+Done :)
