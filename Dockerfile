@@ -25,7 +25,10 @@ RUN apk --no-cache add bash openssl \
     -out /etc/ssl/resty-auto-ssl-fallback.crt \
     && openssl dhparam -out /usr/local/openresty/nginx/conf/dhparam.pem 2048 \
     # let's remove default open resty configuration, we'll conditionally add modified version in entrypoint.sh
-    && rm /etc/nginx/conf.d/default.conf
+    && rm /etc/nginx/conf.d/default.conf \
+    && rm -rf /tmp/luarocks*
+
+RUN chmod 1777 /tmp
 
 COPY ssl_certificate.lua /usr/local/openresty/luajit/share/lua/5.1/resty/auto-ssl/ssl_certificate.lua 
 COPY ./error_pages/ /usr/local/openresty/nginx/html/
