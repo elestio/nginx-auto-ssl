@@ -1,4 +1,4 @@
-FROM openresty/openresty:alpine-fat
+FROM openresty/openresty:1.31.9.1-0-alpine-fat
 
 # allowed domains should be lua match pattern
 ENV DIFFIE_HELLMAN='' \
@@ -17,8 +17,13 @@ ENV DIFFIE_HELLMAN='' \
 # Here we install open resty and generate dhparam.pem file.
 # You can specify DIFFIE_HELLMAN=true to force regeneration of that file on first run
 # also we create fallback ssl keys
+# sockproc (built by lua-resty-auto-ssl) uses "gcc -Werror": recent GCC rejects its signal handler
+# prototype (-Wincompatible-pointer-types). A temporary gcc wrapper downgrades that one error.
 RUN apk --no-cache add bash openssl \
+    && printf '#!/bin/sh\nexec /usr/bin/gcc "$@" -Wno-error=incompatible-pointer-types\n' > /usr/local/bin/gcc \
+    && chmod +x /usr/local/bin/gcc \
     && /usr/local/openresty/luajit/bin/luarocks install lua-resty-auto-ssl $AUTO_SSL_VERSION \
+    && rm -f /usr/local/bin/gcc \
     && openssl req -new -newkey rsa:2048 -days 7300 -nodes -x509 \
     -subj '/CN=sni-support-required-for-valid-ssl' \
     -keyout /etc/ssl/resty-auto-ssl-fallback.key \
